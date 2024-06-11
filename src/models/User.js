@@ -17,8 +17,6 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model("User", userSchema);
-
 userSchema.pre("save", async function () {
     const hash = await bcrypt.hash(this.password, 12);
     this.password = hash;
@@ -30,5 +28,7 @@ userSchema.virtual("rePassword")
             throw new Error("Both passwords must match");
         }
     });
+
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

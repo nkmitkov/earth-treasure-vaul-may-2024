@@ -18,12 +18,28 @@ router.post("/register", async (req, res) => {
     } catch (error) {
         const message = "get the message";
         console.log(error);
-        res.render("user/register", { error: message });
+        res.render("user/register", { email: userData.email, error: message });
     }
 });
 
 router.get("/login", (req, res) => {
     res.render("user/login");
+});
+
+router.post("/login", async (req, res) => {
+    const userData = req.body;
+
+    try {
+        const token = await authService.login(userData);
+
+        res.cookie("auth", token);
+
+        res.redirect("/");
+    } catch (error) {
+        const message = "get the message";
+        console.log(error);
+        res.render("user/login", { email: userData.email, error: message });
+    }
 });
 
 module.exports = router;
