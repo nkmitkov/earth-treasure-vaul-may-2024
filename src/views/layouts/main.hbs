@@ -11,6 +11,14 @@
 
 <body>
 
+    {{#if error}}
+        <div>
+            <div class="errorContainer">
+                <p>{{error}}</p>
+            </div>
+        </div>
+    {{/if}}
+
     <div id="wrapper">
         <header>
             <!-- Navigation -->
