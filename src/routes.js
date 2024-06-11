@@ -6,7 +6,7 @@ const authController = require("./controllers/authController");
 
 router.use(homeController);
 router.use("/stones", stonesController);
-router.use("/auth", authController);
+router.use(authController);
 
 router.get("*", (req, res) => res.render("home/404"));
 
