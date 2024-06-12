@@ -5,3 +5,7 @@ exports.getAllStones = () => Stone.find();
 exports.getStoneById = (id) => Stone.findById(id);
 
 exports.create = (stoneData) => Stone.create(stoneData);
+
+exports.update = (id, stone) => Stone.findByIdAndUpdate(id, stone);
+
+exports.del = (id) => Stone.findByIdAndDelete(id);
