@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const stoneService = require("../services/stoneService");
+const { getErrorMessage } = require("../utils/errorUtils");
 
 router.get("/create", (req, res) => {
     res.render("stones/create");
@@ -11,15 +12,16 @@ router.post("/create", async (req, res) => {
         ...req.body,
         owner: req.user._id,
     }
+    console.log(stoneBody);
     
     try {
         await stoneService.create(stoneBody);
 
         res.redirect("/dashboard");
     } catch (error) {
-        const message = "get the message";
+        const message = getErrorMessage(error);
 
-        res.status(400).render("/stones/create", { ...stoneBody, error: message });
+        res.status(400).render("stones/create", { ...stoneBody, error: message });
     }
 });
 
