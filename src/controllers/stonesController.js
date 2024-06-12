@@ -25,11 +25,16 @@ router.post("/create", async (req, res) => {
     }
 });
 
-router.get("/:stoneId", (req, res) => {
-    const stoneId = req.params.stoneId;
-    // Add stone information
+router.get("/:stoneId", async (req, res) => {
+    try {
+        const stone = await stoneService.getStoneById(req.params.stoneId).lean();
+    
+        res.render("stones/details", { ...stone });
+    } catch (error) {
+        const message = getErrorMessage(error);
 
-    res.render("stones/details");
+        res.status(400).render("stones/details", { ...stone, error: message });
+    }
 });
 
 router.get("/:stoneId/edit", (req, res) => {
