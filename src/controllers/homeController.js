@@ -1,7 +1,17 @@
 const router = require("express").Router();
 
-router.get("/", (req, res) => {
-    res.render("home/home");
+const stoneService = require("../services/stoneService");
+
+router.get("/", async (req, res) => {
+    try {
+        const stones = await stoneService.getAllStones().lean();
+        
+        res.render("home/home", { stones });
+    } catch (error) {
+        const message = getErrorMessage(error);
+
+        res.status(400).render("home/home", { stones, error: message });
+    }
 });
 
 router.get("/dashboard", (req, res) => {

@@ -5,25 +5,18 @@
 </section>
 
 <section id="last-added">
-    <div>
-        <img src="/images/amethyst.jpg">
-        <p>Name: Amethyst</p>
-        <p>Category: Silicate mineral</p>
-        <a class="details-btn" href="#">Details</a>
-    </div>
-    <div>
-        <img src="/images/beryl.webp">
-        <p>Name: Beryl</p>
-        <p>Category: Cyclosilicate</p>
-        <a class="details-btn" href="#">Details</a>
-    </div>
-    <div>
-        <img src="/images/quartz.jpg">
-        <p>Name: Quartz</p>
-        <p>Category: Silicate mineral</p>
-        <a class="details-btn" href="#">Details</a>
-    </div>
+    {{#if stones}}
+        
+        {{#each stones}}
+            <div>
+                <img src="{{image}}">
+                <p>Name: {{name}}</p>
+                <p>Category: {{category}}</p>
+                <a class="details-btn" href="/stones/{{_id}}">Details</a>
+            </div>
+        {{/each}}
 
-<!-- <p class="no-post">There are no gems and minerals!</p> -->
-
+    {{else}}
+        <p class="no-post">There are no gems and minerals!</p>
+    {{/if}}
 </section>
