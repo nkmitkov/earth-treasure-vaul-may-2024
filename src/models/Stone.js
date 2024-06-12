@@ -36,12 +36,12 @@ const stoneSchema = new mongoose.Schema({
     image: {
         type: String,
         required: [true, "All fields are required"],
-        match: [/\w/, "Image must be a valid url"],
+        match: [/^https?:\/\//, "Image must be a valid url"],
     },
-    likedList: {
-        type: Array,
+    likedList: [{
+        type: mongoose.Types.ObjectId,
         ref: "User",
-    },
+    }],
     owner: {
         type: mongoose.Types.ObjectId,
         ref: "User",
