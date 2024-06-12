@@ -5,8 +5,7 @@
 </section>
 
 <section id="last-added">
-    {{#if stones}}
-        
+
         {{#each stones}}
             <div>
                 <img src="{{image}}">
@@ -14,9 +13,8 @@
                 <p>Category: {{category}}</p>
                 <a class="details-btn" href="/stones/{{_id}}">Details</a>
             </div>
+        {{else}}
+            <p class="no-post">There are no gems and minerals!</p>
         {{/each}}
 
-    {{else}}
-        <p class="no-post">There are no gems and minerals!</p>
-    {{/if}}
 </section>

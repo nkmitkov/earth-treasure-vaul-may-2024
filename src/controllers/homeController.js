@@ -14,8 +14,16 @@ router.get("/", async (req, res) => {
     }
 });
 
-router.get("/dashboard", (req, res) => {
-    res.render("home/dashboard");
+router.get("/dashboard", async (req, res) => {
+    try {
+        const stones = await stoneService.getAllStones().lean();
+        
+        res.render("home/dashboard", { stones });
+    } catch (error) {
+        const message = getErrorMessage(error);
+
+        res.status(400).render("home/dashboard", { stones, error: message });
+    }
 });
 
 router.get("/search", (req, res) => {
