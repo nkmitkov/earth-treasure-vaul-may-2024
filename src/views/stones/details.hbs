@@ -29,12 +29,19 @@
             <p>Description: <span id="details-description">{{description}}</span></p>
         </div>
 
-        <!--Edit and Delete are only for creator-->
-        <div id="action-buttons">
-            <a href="/stones/{{_id}}/edit" id="edit-btn">Edit</a>
-            <a href="/stones/{{_id}}/delete" id="delete-btn">Delete</a>
-            <a href="/stones/{{_id}}/like" id="like-btn">Like</a>
-            <p id="already-liked">You already liked this stone!</p>
-        </div>
+        {{#if isAuthenticated}}
+            <div id="action-buttons">
+                {{#if isOwner}}
+                    <a href="/stones/{{_id}}/edit" id="edit-btn">Edit</a>
+                    <a href="/stones/{{_id}}/delete" id="delete-btn">Delete</a>
+                {{else}}
+                    {{#if isStoneLiked}}
+                    <p id="already-liked">You already liked this stone!</p>
+                    {{else}}
+                    <a href="/stones/{{_id}}/like" id="like-btn">Like</a>
+                    {{/if}}
+                {{/if}}
+            </div>
+        {{/if}}
     </div>
 </section>

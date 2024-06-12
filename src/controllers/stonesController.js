@@ -12,7 +12,7 @@ router.post("/create", async (req, res) => {
         ...req.body,
         owner: req.user._id,
     }
-    
+
     try {
         await stoneService.create(stoneBody);
 
@@ -25,26 +25,35 @@ router.post("/create", async (req, res) => {
 });
 
 router.get("/:stoneId", async (req, res) => {
+    const currentUserId = req.user._id;
+
     try {
         const stone = await stoneService.getStoneById(req.params.stoneId).lean();
-    
-        res.render("stones/details", { ...stone });
+        const isOwner = currentUserId == stone.owner;
+        let isStoneLiked;
+
+        if (!isOwner) {
+            // if there is a match return true otherwise false
+            isStoneLiked = stone.likedList.find((id) => id == currentUserId);
+        }
+
+        res.render("stones/details", { ...stone, isOwner, isStoneLiked });
     } catch (error) {
         const message = getErrorMessage(error);
 
-        res.status(400).render("stones/details", { ...stone, error: message });
+        res.status(400).render("home/dashboard", { error: message });
     }
 });
 
 router.get("/:stoneId/edit", async (req, res) => {
     try {
         const stone = await stoneService.getStoneById(req.params.stoneId).lean();
-    
+
         res.render("stones/edit", { ...stone });
     } catch (error) {
         const message = getErrorMessage(error);
 
-        res.status(400).render("stones/edit", { ...stone, error: message });
+        res.status(400).render("home/dashboard", { error: message });
     }
 });
 
@@ -59,7 +68,7 @@ router.post("/:stoneId/edit", async (req, res) => {
     } catch (error) {
         const message = getErrorMessage(error);
 
-        res.status(400).render("stones/edit", { ...editedStone, error: message });
+        res.status(400).render("home/dashboard", { error: message });
     }
 });
 
@@ -73,8 +82,26 @@ router.get("/:stoneId/delete", async (req, res) => {
     } catch (error) {
         const message = getErrorMessage(error);
 
-        res.status(400).redirect(`stones/${stoneId}`, { error: message });
+        res.status(400).render("home/dashboard", { error: message });
     }
+});
+
+router.get("/:stoneId/like", async (req, res) => {
+    const stoneId = req.params.stoneId;
+    const currentUserId = req.user._id;
+    
+    try {
+        const stone = await stoneService.getStoneById(stoneId).lean();
+        stone.likedList.push(currentUserId);
+        await stoneService.update(stoneId, stone);
+
+        res.redirect(`/stones/${stoneId}`);
+    } catch (error) {
+        const message = getErrorMessage(error);
+        
+        res.status(400).redirect("/dashboard", { error: message });
+    }
+
 });
 
 module.exports = router;
