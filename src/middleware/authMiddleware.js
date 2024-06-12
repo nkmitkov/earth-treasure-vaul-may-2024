@@ -1,7 +1,7 @@
 const jwt = require("../lib/jwt");
 const { SECRET } = require("../config/config");
 
-exports.auth = (req, res, next) => {
+exports.auth = async (req, res, next) => {
     const token = req.cookies["auth"];
 
     if (!token) {
@@ -9,7 +9,7 @@ exports.auth = (req, res, next) => {
     }
 
     try {
-        const decodedToken = jwt.verify(token, SECRET);
+        const decodedToken = await jwt.verify(token, SECRET);
 
         req.user = decodedToken;
         res.locals.isAuthenticated = true;
