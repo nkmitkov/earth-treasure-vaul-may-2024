@@ -5,6 +5,7 @@ const stoneSchema = new mongoose.Schema({
         type: String,
         required: [true, "All fields are required"],
         minLength: [2, "Name must be at least 2 characters"],
+        lowercase: true,
     },
     category: {
         type: String,
